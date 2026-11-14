@@ -131,7 +131,7 @@ button.cntw{padding:0;cursor:pointer}
 #out.run{animation:eject .9s cubic-bezier(.2,.7,.2,1) both,dev 3.4s ease-in .5s both}
 @keyframes eject{from{transform:translateY(-60vh)}to{transform:none}}
 @keyframes dev{from{filter:brightness(.2) saturate(0) blur(8px)}60%{filter:brightness(.8) saturate(.5) blur(2px)}to{filter:none}}
-#rl{position:fixed;inset:0;background:#0e0d0c;z-index:8;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#roll{position:fixed;inset:0;background:#0e0d0c;z-index:8;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rh{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;font:600 18px "Barlow Condensed",system-ui,sans-serif;letter-spacing:.12em}
 .rh button{padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--pan);color:var(--ink);font-size:13px;cursor:pointer}
 #rg{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 10px;align-content:start}
@@ -186,7 +186,7 @@ button.cntw{padding:0;cursor:pointer}
   </section>
 </div>
 <div id="ov" role="dialog" aria-label="Save photo"><div class="slot"></div><img id="out" alt="Result photo"><p id="ovp">Saved to your Roll.</p><div class="obt"><button id="osave" class="pri">Save</button><button id="oshare" hidden>Share</button><button id="close">Done</button></div></div>
-<div id="rl" hidden><div class="rh"><span id="rt">ROLL</span><button id="rx">CLOSE</button></div><div id="rg"></div><div class="rbar"><button id="rsv" class="pri">Save all</button><button id="rcs">Contact sheet</button><button id="rdl" hidden>Delete</button></div></div>
+<div id="roll" hidden><div class="rh"><span id="rt">ROLL</span><button id="rx">CLOSE</button></div><div id="rg"></div><div class="rbar"><button id="rsv" class="pri">Save all</button><button id="rcs">Contact sheet</button><button id="rdl" hidden>Delete</button></div></div>
 <script>
 var $=function(i){return document.getElementById(i)};
 function sc(c,b,w){var y=[0,.25-.07*c,.5,.75+.07*c,1].map(function(v){return b+v*(1-b-w)});return[[0,y[0]],[.25,y[1]],[.5,y[2]],[.75,y[3]],[1,y[4]]]}
@@ -717,7 +717,7 @@ function showOv(b,msg,anim){
 function ovClose(saved){
   $("ov").classList.remove("on");
   if(FIN){FIN=0;setTimeout(function(){toast("Roll finished! Tap the counter to export a contact sheet.")},500)}
-  if(!$("rl").hidden)return;
+  if(!$("roll").hidden)return;
   if((S.fromLive||saved)&&(!ART||L.worked))startCam();
 }
 function shoot(){
@@ -756,7 +756,7 @@ function rollSel(){return RS.items.filter(function(i){return RS.sel[i.id]})}
 function rollBar(){var n=rollSel().length;$("rsv").textContent=n?"Save "+n:"Save all";$("rdl").hidden=!n}
 function rollDraw(){
   RS.urls.forEach(function(u){if(u.indexOf("blob:")===0)URL.revokeObjectURL(u)});RS.urls=[];
-  var g=$("rg");g.innerHTML="";$("rt").textContent="ROLL \u00b7 "+RS.items.length+" SHOTS";
+  var g=$("rg");g.innerHTML="";$("rt").textContent="ROLL \u00b7 "+RS.items.length+(RS.items.length===1?" SHOT":" SHOTS");
   if(!RS.items.length)g.innerHTML='<p class="re">No shots yet. Take a photo and it appears here.</p>';
   RS.items.forEach(function(it){
     var b=document.createElement("button"),im=document.createElement("img");b.className="tl"+(RS.sel[it.id]?" on":"");b.appendChild(im);
@@ -768,10 +768,10 @@ function rollDraw(){
 }
 function rollOpen(){
   stopCam();closeS();
-  rollAll(function(a){RS.items=a.reverse();RS.sel={};rollDraw();$("rl").hidden=false});
+  rollAll(function(a){RS.items=a.reverse();RS.sel={};rollDraw();$("roll").hidden=false});
 }
 $("cnt").onclick=rollOpen;
-$("rx").onclick=function(){$("rl").hidden=true;RS.urls.forEach(function(u){if(u.indexOf("blob:")===0)URL.revokeObjectURL(u)});RS.urls=[];if(!ART||L.worked)startCam()};
+$("rx").onclick=function(){$("roll").hidden=true;RS.urls.forEach(function(u){if(u.indexOf("blob:")===0)URL.revokeObjectURL(u)});RS.urls=[];if(!ART||L.worked)startCam()};
 $("rsv").onclick=function(){var s=rollSel();if(!s.length)s=RS.items;if(s.length)exportFiles(s.map(function(x){return x.blob}))};
 $("rdl").onclick=function(){
   var s=rollSel();if(!s.length||!confirm("Delete "+s.length+" shot(s)?"))return;

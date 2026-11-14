@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#121110">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Filmroll">
+<meta name="apple-mobile-web-app-title" content="Toshella">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Filmroll – Analog Film Camera</title>
+<title>Toshella Camera</title>
 <style>
 :root{--body:#121110;--pan:#1c1a17;--line:#3a352e;--ink:#efe8d8;--dim:#a79e8a;--amb:#ff9a2e;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html,body{margin:0}
@@ -96,7 +96,7 @@ input.sl{width:100%;accent-color:var(--amb);margin:0 0 10px}
 .cam::before{content:"";position:absolute;inset:3px;border:1px dashed rgba(255,255,255,.13);border-radius:16px;pointer-events:none}
 .top{background:linear-gradient(#e4e4e1,#a4a4a1 55%,#74746f);border-radius:10px 10px 4px 4px;padding:6px 10px;margin:2px 0 8px;box-shadow:inset 0 1px 0 #fff,0 3px 8px rgba(0,0,0,.7)}
 .brand{display:flex;flex-direction:column;align-items:center;gap:1px;font-family:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;color:#2a2a28;text-shadow:0 1px 0 rgba(255,255,255,.55)}
-.brand b{font-size:16px;letter-spacing:.3em;font-weight:700;padding-left:.3em}
+.brand b{font-size:14px;letter-spacing:.16em;font-weight:700;padding-left:.16em;white-space:nowrap}
 .brand em{font-style:normal;font-size:11px;letter-spacing:.14em;font-weight:600}
 .led{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5a1a14;box-shadow:inset 0 0 0 1px rgba(0,0,0,.4);margin-right:7px;vertical-align:2px}
 .led.on{background:#ff3b2f;box-shadow:0 0 8px #ff3b2f}
@@ -115,7 +115,7 @@ input.sl{width:100%;accent-color:var(--amb);margin:0 0 10px}
 </head>
 <body>
 <div class="cam">
-  <div class="top"><div class="cntw" id="cnt">36</div><div class="brand"><b><i class="led" id="led"></i>FILMROLL</b><em id="isoT">ISO 200</em></div><div class="dial" id="dial"></div></div>
+  <div class="top"><div class="cntw" id="cnt">36</div><div class="brand"><b><i class="led" id="led"></i>TOSHELLA CAMERA</b><em id="isoT">ISO 200</em></div><div class="dial" id="dial"></div></div>
   <div class="vf" id="vf">
     <canvas id="cv" width="720" height="960"></canvas><div class="grid"></div>
     <button class="date" data-fx="stamp" aria-pressed="false">DATE</button>
@@ -151,7 +151,7 @@ input.sl{width:100%;accent-color:var(--amb);margin:0 0 10px}
     <label>Zoom <span id="zv">100%</span></label><input class="sl" type="range" id="z" min="100" max="400" value="100">
   </section>
 </div>
-<div id="ov" role="dialog" aria-label="Save photo"><img id="out" alt="Result photo"><p>Save this photo?</p><div class="obt"><button id="osave" class="pri">Save</button><button id="oshare" hidden>Share</button><button id="close">Cancel</button></div></div>
+<div id="ov" role="dialog" aria-label="Save photo"><img id="out" alt="Result photo"><p id="ovp">Save this photo?</p><div class="obt"><button id="osave" class="pri">Save</button><button id="oshare" hidden>Share</button><button id="close">Cancel</button></div></div>
 <script>
 var $=function(i){return document.getElementById(i)};
 function sc(c,b,w){var y=[0,.25-.07*c,.5,.75+.07*c,1].map(function(v){return b+v*(1-b-w)});return[[0,y[0]],[.25,y[1]],[.5,y[2]],[.75,y[3]],[1,y[4]]]}
@@ -618,7 +618,7 @@ $("stop").onclick=function(){
   var k=L.keep;if(k){S.src=k.s;S.rot=k.r;S.z=k.z;S.ox=k.x;S.oy=k.y;L.keep=null;zUI();prep()}else demo();
 };
 var OV={url:null,blob:null};
-function fname(){var d=new Date(),q=function(n){return("0"+n).slice(-2)};return"filmroll-"+d.getFullYear()+q(d.getMonth()+1)+q(d.getDate())+"-"+q(d.getHours())+q(d.getMinutes())+q(d.getSeconds())+".jpg"}
+function fname(){var d=new Date(),q=function(n){return("0"+n).slice(-2)};return"toshella-"+d.getFullYear()+q(d.getMonth()+1)+q(d.getDate())+"-"+q(d.getHours())+q(d.getMinutes())+q(d.getSeconds())+".jpg"}
 function ovClose(saved){
   $("ov").classList.remove("on");
   var u=OV.url;OV.url=null;if(u)setTimeout(function(){URL.revokeObjectURL(u)},4000);
@@ -633,11 +633,22 @@ $("sb").onclick=function(){
     if(!b)return;
     OV.blob=b;OV.url=URL.createObjectURL(b);$("out").src=OV.url;
     var f=new File([b],fname(),{type:"image/jpeg"});
-    $("oshare").hidden=!(navigator.canShare&&navigator.canShare({files:[f]}));
+    $("oshare").hidden=IOS||!(navigator.canShare&&navigator.canShare({files:[f]}));
+    $("ovp").textContent=IOS?"Tap Save, then choose Save Image to add it to your Photos.":"Save this photo?";
     $("ov").classList.add("on");
   },"image/jpeg",.92);
 };
+var IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 $("osave").onclick=function(){
+  if(IOS){
+    if(navigator.share){
+      var f=new File([OV.blob],fname(),{type:"image/jpeg"});
+      navigator.share({files:[f]}).then(function(){ovClose(true)}).catch(function(e){
+        if(e&&e.name!=="AbortError")$("ovp").textContent="Press and hold the photo, then choose Add to Photos."
+      });
+    }else{$("ovp").textContent="Press and hold the photo, then choose Add to Photos."}
+    return;
+  }
   var a=document.createElement("a");a.href=OV.url;a.download=fname();document.body.appendChild(a);a.click();a.remove();
   setTimeout(function(){ovClose(true)},500);
 };

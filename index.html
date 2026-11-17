@@ -202,6 +202,25 @@ button.cntw{padding:0;cursor:pointer}
 #load.open{background:transparent}
 #load.open .gate,#load.open #lt2{opacity:0;transition:none}
 #load.open #ldoor{transform:translateY(-105%)}
+.col{width:84px;gap:7px}
+.qg{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%}
+.qg .sq{width:100%;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.qg .sq svg{width:19px;height:19px}
+.qg .sq em{font:600 9px/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.08em;font-style:normal;color:#8d887a}
+.sq[aria-pressed="true"],.sq.on{color:var(--amb)}
+.sq[aria-pressed="true"] em,.sq.on em{color:var(--amb)}
+.wheel{flex:none;align-self:center;width:44px;height:116px;max-width:none;min-height:0;margin-top:auto}
+.glass{position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 50% 48%,transparent 50%,rgba(0,0,0,.6) 100%),linear-gradient(115deg,rgba(255,255,255,.08) 0 16%,transparent 16% 100%)}
+.glass::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='1' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 34 0 0 0 -28.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3C/svg%3E") 0 0/320px 320px,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='800' viewBox='0 0 400 800' preserveAspectRatio='none'%3E%3Cg stroke='white' fill='none' stroke-linecap='round'%3E%3Cpath d='M70 -10 L112 810' stroke-width='.7' opacity='.55'/%3E%3Cpath d='M310 30 Q335 330 296 790' stroke-width='.6' opacity='.45'/%3E%3Cpath d='M180 120 L196 330' stroke-width='.5' opacity='.5'/%3E%3Cpath d='M20 520 Q120 540 230 590' stroke-width='.5' opacity='.4'/%3E%3Cpath d='M350 600 L372 700' stroke-width='.6' opacity='.5'/%3E%3C/g%3E%3C/svg%3E") 0 0/100% 100%;opacity:.5;mix-blend-mode:screen}
+#sflash{position:fixed;inset:0;background:#fff;z-index:60}
+#rg{display:block}
+.gsec{margin-bottom:18px}
+.gh{display:flex;align-items:center;gap:10px;padding:6px 4px 8px}
+.gc svg{height:46px;width:auto;display:block}
+.gt b{display:block;font:600 14px "Barlow Condensed",system-ui,sans-serif;letter-spacing:.1em;color:#ece6d6}
+.gt small{color:#8f8a7c;font-size:12px}
+.gs{margin-left:auto;padding:8px 12px;border-radius:8px;border:1px solid #333;background:#181818;color:#ece6d6;font-size:12px;letter-spacing:.06em;cursor:pointer}
+.gg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 </style>
 </head>
 <body>
@@ -209,10 +228,9 @@ button.cntw{padding:0;cursor:pointer}
   <div class="stat"><span>TOSHELLA CAMERA</span><i class="led" id="led"></i></div>
   <div class="mid">
     <div class="vf" id="vf">
-      <canvas id="cv" width="720" height="960"></canvas><div class="grid"></div>
+      <canvas id="cv" width="720" height="960"></canvas><div class="glass"></div><div class="grid"></div>
       <div class="zr"><b id="zt">1.0x</b><i class="zk" id="zk"></i></div>
-      <button class="date" data-fx="stamp" aria-pressed="false">DATE</button>
-      <div class="ev"><input type="range" id="ev" min="-2" max="2" step=".1" value="0" aria-label="Exposure"><div class="evl"><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span></div></div>
+            <div class="ev"><input type="range" id="ev" min="-2" max="2" step=".1" value="0" aria-label="Exposure"><div class="evl"><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span></div></div>
       <span class="evv" id="evv">+0.0</span>
       <div class="tip" id="tip"></div>
       <div class="cd" id="cd" hidden></div>
@@ -223,9 +241,16 @@ button.cntw{padding:0;cursor:pointer}
     </div>
     <div class="col">
       <div class="lcd"><svg viewBox="0 0 24 14"><path d="M1 13L8 2l5 8 3-4 7 7z" fill="currentColor"/></svg><div class="lfl"><svg viewBox="0 0 24 24"><path d="M13 2L5 14h6l-1 8 8-12h-6z" fill="currentColor"/></svg><span id="lcdf">OFF</span></div><small>ISO</small><b id="isoT">200</b><small id="lfr">FULL</small></div>
-      <button class="sq" id="torch" aria-label="Flash"><svg viewBox="0 0 24 24"><path d="M13 2L5 14h6l-1 8 8-12h-6z"/></svg></button>
-      <button class="sq" id="rb" aria-label="Flip camera"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></button><span id="rl" hidden>LIVE</span>
-      <button class="sq" id="setb" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
+      <div class="qg">
+        <button class="sq" id="torch" aria-label="Flash"><svg viewBox="0 0 24 24"><path d="M13 2L5 14h6l-1 8 8-12h-6z"/></svg><em>FLASH</em></button>
+        <button class="sq" id="rb" aria-label="Flip camera"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><em>FLIP</em></button>
+        <button class="sq" id="tmr" aria-label="Timer"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7"/><path d="M12 13V9M9 3h6"/></svg><em id="tml">TIMER</em></button>
+        <button class="sq" id="frb" aria-label="Frame"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><rect x="8" y="6" width="8" height="9"/></svg><em>FRAME</em></button>
+        <button class="sq" id="datb" data-fx="stamp" aria-pressed="false" aria-label="Date stamp"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><em>DATE</em></button>
+        <button class="sq" id="lkb" data-fx="leak" aria-pressed="false" aria-label="Light leak"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><em>LEAK</em></button>
+        <button class="sq" id="grb" aria-label="Grain"><svg viewBox="0 0 24 24"><circle cx="7" cy="8" r="1"/><circle cx="14" cy="6" r="1"/><circle cx="17" cy="13" r="1"/><circle cx="9" cy="15" r="1"/><circle cx="13" cy="18" r="1"/></svg><em id="grl">GRAIN</em></button>
+        <button class="sq" id="setb" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><em>SET</em></button>
+      </div><span id="rl" hidden>LIVE</span>
       <div class="wheel" id="wh" role="slider" aria-label="Zoom"></div>
     </div>
   </div>
@@ -237,6 +262,7 @@ button.cntw{padding:0;cursor:pointer}
 </div>
 <input type="file" id="file" accept="image/*" multiple>
 <input type="file" id="shot" accept="image/*" capture="environment">
+<div id="sflash" hidden></div>
 <div id="bk"></div>
 <div id="sh" role="dialog" aria-label="Settings">
   <section data-s="film"><div class="shh"><b>Films</b><span>Tap a roll to load it · ★ favorite</span></div><div class="strip"><div class="rail" id="rail"></div></div></section>
@@ -247,7 +273,7 @@ button.cntw{padding:0;cursor:pointer}
     <label>Film strength <span id="kv">100%</span></label><input class="sl" type="range" id="k" min="0" max="100" value="100">
     <label>Film grain <span id="gv">100%</span></label><input class="sl" type="range" id="g" min="0" max="200" value="100">
     <label>Zoom <span id="zv">100%</span></label><input class="sl" type="range" id="z" min="100" max="400" value="100">
-    <div class="ch">CAMERA</div><div class="tg"><button id="tmr">TIMER OFF</button><label class="btnl" for="file">Import photos</label></div>
+    <div class="ch">CAMERA</div><div class="tg"><label class="btnl" for="file">Import photos</label></div>
   </section>
 </div>
 <div id="ov" role="dialog" aria-label="Save photo"><div class="slot"></div><img id="out" alt="Result photo"><p id="ovp">Saved to your Roll.</p><div class="obt"><button id="osave" class="pri">Save</button><button id="oshare" hidden>Share</button><button id="close">Done</button></div></div>
@@ -313,6 +339,7 @@ function cart(key){
 }
 var FR={
 none:{n:"Full",fw:60,fh:80,px:0,py:0,pw:60,ph:80,c:"#000"},
+r34:{n:"3:4",fw:60,fh:80,px:0,py:0,pw:60,ph:80,c:"#000"},
 square:{n:"Square",fw:60,fh:60,px:0,py:0,pw:60,ph:60,c:"#000"},
 thin:{n:"Thin",fw:66,fh:86,px:3,py:3,pw:60,ph:80,c:"#f5f3ec"},
 mini:{n:"Instax Mini",fw:54,fh:86,px:4,py:5,pw:46,ph:62,c:"#f5f3ec"},
@@ -325,7 +352,9 @@ var L={stream:null,vid:null,face:"environment",on:false,off:null,n:0,keep:null};
 var RM=(function(){try{return JSON.parse(localStorage.getItem("tsh_rm")||"{}")}catch(e){return{}}})(),keys=Object.keys(F),chips={};
 
 function mkNoise(n){var a=new Float32Array(n);for(var i=0;i<n;i++)a[i]=Math.random()+Math.random()+Math.random()-1.5;return a}
+function fitFull(){var v=$("vf"),w=v.clientWidth,h=v.clientHeight;if(w>40&&h>40){var r=Math.min(.75,Math.max(.46,w/h));FR.none.pw=FR.none.fw=Math.round(80*r);FR.none.ph=FR.none.fh=80}}
 function geo(q){
+  if(S.fr==="none")fitFull();
   var f=FR[S.fr],s=q/Math.max(f.pw,f.ph);
   return{FW:Math.round(f.fw*s),FH:Math.round(f.fh*s),x:Math.round(f.px*s),y:Math.round(f.py*s),w:Math.round(f.pw*s),h:Math.round(f.ph*s)};
 }
@@ -633,7 +662,7 @@ async function startCam(){
     v.setAttribute("playsinline","");v.muted=true;v.srcObject=st;await v.play();
     if(S.src&&!L.keep)L.keep={s:S.src,r:S.rot,z:S.z,x:S.ox,y:S.oy};
     if(!was){S.z=1;S.ox=0;S.oy=0;zUI()}
-    L.worked=true;L.stream=st;L.vid=v;L.on=true;L.tr=st.getVideoTracks()[0];var cp=L.tr.getCapabilities?L.tr.getCapabilities():{};L.zr=cp.zoom||null;$("torch").classList.toggle("off",!cp.torch);$("torch").classList.remove("on");L.torch=false;$("lcdf").textContent="OFF";L.n=0;S.base=null;S.q=GLM?960:640;
+    L.worked=true;L.stream=st;L.vid=v;L.on=true;L.tr=st.getVideoTracks()[0];var cp=L.tr.getCapabilities?L.tr.getCapabilities():{};L.zr=cp.zoom||null;$("torch").classList.toggle("off",!cp.torch&&L.face!=="user");L.torch=false;if(FM===2){if(cp.torch)L.tr.applyConstraints({advanced:[{torch:true}]}).catch(function(){});else FM=0}flashUI();L.n=0;S.base=null;S.q=GLM?960:640;
     camUI(true);$("msg").textContent="";closeS();
     loop();
   }catch(e){
@@ -752,7 +781,7 @@ function dbOpen(cb){
     r.onsuccess=function(){DB=r.result;cb(DB)};r.onerror=function(){cb(null)};
   }catch(e){cb(null)}
 }
-function rollAdd(b,cb){dbOpen(function(d){if(!d)return cb&&cb(0);var t=d.transaction("shots","readwrite"),q=t.objectStore("shots").add({blob:b,t:Date.now()});q.onsuccess=function(){cb&&cb(q.result)};t.onerror=function(){cb&&cb(0)}})}
+function rollAdd(b,cb,meta){dbOpen(function(d){if(!d)return cb&&cb(0);var t=d.transaction("shots","readwrite"),q=t.objectStore("shots").add({blob:b,t:Date.now(),film:meta&&meta.film,roll:meta&&meta.roll});q.onsuccess=function(){cb&&cb(q.result)};t.onerror=function(){cb&&cb(0)}})}
 function rollAll(cb){dbOpen(function(d){if(!d)return cb([]);var q=d.transaction("shots").objectStore("shots").getAll();q.onsuccess=function(){cb(q.result||[])};q.onerror=function(){cb([])}})}
 function rollDel(id,cb){dbOpen(function(d){if(!d)return cb&&cb();var t=d.transaction("shots","readwrite");t.objectStore("shots").delete(id);t.oncomplete=function(){cb&&cb()}})}
 function imgSrc(b,cb){if(ART){var r=new FileReader();r.onload=function(){cb(r.result)};r.readAsDataURL(b)}else cb(URL.createObjectURL(b))}
@@ -782,19 +811,30 @@ function ovClose(saved){
   if(!$("roll").hidden)return;
   if((S.fromLive||saved)&&(!ART||L.worked))startCam();
 }
-function shoot(){
+function shoot2(){
   if(rem(S.key)<=0){toast("This roll is finished. Tap the film window to load a new roll.");return}
   if(L.on)snap();
   if(!S.base)return;
   clk();
   var v=$("vf");v.classList.remove("fl");void v.offsetWidth;v.classList.add("fl");
   draw();
-  var rr=rem(S.key),fin=rr<=1;setRem(S.key,rr-1);
+  var fk=S.key,rno=rnOf(fk),rr=rem(fk),fin=rr<=1;setRem(fk,rr-1);
   cv.toBlob(function(b){
     if(!b)return;
-    rollAdd(b,lastUpd);if(fin)FIN=1;
+    rollAdd(b,lastUpd,{film:fk,roll:rno});if(fin)FIN=1;
     showOv(b,IOS?"Saved to your Roll. Tap Save to add it to Photos.":ART?"Saved to your Roll. Press and hold the photo to save it.":"Saved to your Roll. Tap Save for a copy on your phone.",true);
   },"image/jpeg",.92);
+}
+var FM=0;
+function flashUI(){$("lcdf").textContent=["OFF","FLASH","TORCH"][FM];$("torch").classList.toggle("on",FM>0)}
+function shoot(){
+  var go=function(){shoot2();$("sflash").hidden=true};
+  if(FM===1&&L.on){
+    var can=!!(L.tr&&L.tr.getCapabilities&&L.tr.getCapabilities().torch);
+    if(can)L.tr.applyConstraints({advanced:[{torch:true}]}).then(function(){setTimeout(go,380)}).catch(go);
+    else if(L.face==="user"){$("sflash").hidden=false;setTimeout(go,300)}
+    else go();
+  }else go();
 }
 $("sb").onclick=function(){
   if(CD){clearInterval(CD);CD=0;$("cd").hidden=true;return}
@@ -809,22 +849,53 @@ $("oshare").onclick=function(){
   navigator.share({files:[f]}).then(function(){ovClose(true)}).catch(function(){});
 };
 $("close").onclick=function(){ovClose(false)};
-$("tmr").onclick=function(){TM=TM===0?3:TM===3?10:0;this.textContent=TM?"TIMER "+TM+"S":"TIMER OFF";this.classList.toggle("on",!!TM)};
-$("torch").onclick=function(){if(!L.tr||this.classList.contains("off")){toast("Flash is not supported on this camera");return}L.torch=!L.torch;L.tr.applyConstraints({advanced:[{torch:L.torch}]}).catch(function(){});this.classList.toggle("on",L.torch);$("lcdf").textContent=L.torch?"ON":"OFF"};
+$("tmr").onclick=function(){TM=TM===0?3:TM===3?10:0;$("tml").textContent=TM?TM+" SEC":"TIMER";this.classList.toggle("on",!!TM)};
+$("torch").onclick=function(){
+  var can=!!(L.tr&&L.tr.getCapabilities&&L.tr.getCapabilities().torch),front=L.face==="user";
+  if(!L.on){toast("Start the camera first");return}
+  if(!can&&!front){toast("This browser cannot control the camera flash (iPhone Safari does not allow it)");return}
+  FM=(FM+1)%3;if(front&&FM===2)FM=0;
+  if(can)L.tr.applyConstraints({advanced:[{torch:FM===2}]}).catch(function(){toast("The camera refused to turn the flash on")});
+  flashUI();toast(FM===0?"Flash off":FM===1?(front?"Screen flash on":"Flash fires when you shoot"):"Torch on");
+};
 $("scol").onclick=function(){SCI=(SCI+1)%3;queue();toast("Stamp color changed")};
 $("sfmt").onclick=function(){SF=(SF+1)%3;queue();toast(stampText(new Date()))};
 /* roll viewer */
 function rollSel(){return RS.items.filter(function(i){return RS.sel[i.id]})}
 function rollBar(){var n=rollSel().length;$("rsv").textContent=n?"Save "+n:"Save all";$("rdl").hidden=!n}
+function rollGroups(items){
+  var gs=[],ix={};
+  items.forEach(function(it){
+    var k=it.film?it.film+"#"+it.roll:"other";
+    if(!ix[k]){ix[k]={film:it.film||null,roll:it.roll,items:[]};gs.push(ix[k])}
+    ix[k].items.push(it);
+  });
+  return gs;
+}
 function rollDraw(){
   RS.urls.forEach(function(u){if(u.indexOf("blob:")===0)URL.revokeObjectURL(u)});RS.urls=[];
-  var g=$("rg");g.innerHTML="";$("rt").textContent="ROLL \u00b7 "+RS.items.length+(RS.items.length===1?" SHOT":" SHOTS");
+  var g=$("rg");g.innerHTML="";
+  var gs=rollGroups(RS.items);
+  $("rt").textContent="ROLLS \u00b7 "+gs.length;
   if(!RS.items.length)g.innerHTML='<p class="re">No shots yet. Take a photo and it appears here.</p>';
-  RS.items.forEach(function(it){
-    var b=document.createElement("button"),im=document.createElement("img");b.className="tl"+(RS.sel[it.id]?" on":"");b.appendChild(im);
-    imgSrc(it.blob,function(u){im.src=u;RS.urls.push(u)});
-    b.onclick=function(){RS.sel[it.id]=!RS.sel[it.id];b.classList.toggle("on",!!RS.sel[it.id]);rollBar()};
-    g.appendChild(b);
+  gs.forEach(function(gr){
+    var sec=document.createElement("section"),h=document.createElement("div"),gg=document.createElement("div");
+    sec.className="gsec";h.className="gh";gg.className="gg";
+    var title=gr.film?F[gr.film].n.toUpperCase()+" \u00b7 ROLL "+gr.roll:"IMPORTED & EARLIER";
+    h.innerHTML=(gr.film?'<span class="gc">'+cart(gr.film)+'</span>':'')+'<div class="gt"><b>'+title+'</b><small>'+gr.items.length+(gr.film?" / 21 shots":(gr.items.length===1?" picture":" pictures"))+'</small></div>';
+    var sb=document.createElement("button");sb.className="gs";sb.textContent="SELECT";
+    sb.onclick=function(){
+      var all=gr.items.every(function(i){return RS.sel[i.id]});
+      gr.items.forEach(function(i){RS.sel[i.id]=!all});rollDraw();
+    };
+    h.appendChild(sb);sec.appendChild(h);
+    gr.items.slice().reverse().forEach(function(it){
+      var b=document.createElement("button"),im=document.createElement("img");b.className="tl"+(RS.sel[it.id]?" on":"");b.appendChild(im);
+      imgSrc(it.blob,function(u){im.src=u;RS.urls.push(u)});
+      b.onclick=function(){RS.sel[it.id]=!RS.sel[it.id];b.classList.toggle("on",!!RS.sel[it.id]);rollBar()};
+      gg.appendChild(b);
+    });
+    sec.appendChild(gg);g.appendChild(sec);
   });
   rollBar();
 }
@@ -870,6 +941,9 @@ async function batch(fl){
 }
 
 /* film counters, loading animation, wheel */
+var RN=(function(){try{return JSON.parse(localStorage.getItem("tsh_rn")||"{}")}catch(e){return{}}})();
+function rnOf(k){return RN[k]||1}
+function bumpRn(k){RN[k]=rnOf(k)+1;try{localStorage.setItem("tsh_rn",JSON.stringify(RN))}catch(e){}}
 function rem(k){return RM[k]==null?21:RM[k]}
 function setRem(k,v){RM[k]=Math.max(0,v);try{localStorage.setItem("tsh_rm",JSON.stringify(RM))}catch(e){}updCnt()}
 function updCnt(){
@@ -886,7 +960,7 @@ function loadFilm(key){
   void o.offsetWidth;o.className="go";clk();
   setTimeout(function(){o.className="go close";clk()},1300);
   setTimeout(function(){
-    if(rem(key)<=0)setRem(key,21);
+    if(rem(key)<=0){setRem(key,21);bumpRn(key)}
     S.key=key;try{localStorage.setItem("tsh_film",key)}catch(e){}
     Object.keys(chips).forEach(function(q){chips[q].b.setAttribute("aria-pressed",q===key)});
     lab();queue();
@@ -909,12 +983,25 @@ function zWheel(){
 (function(){
   var w=$("wh"),id=null,y0=0,z0=1;
   w.onpointerdown=function(e){id=e.pointerId;w.setPointerCapture(id);y0=e.clientY;z0=S.z;w.classList.add("on")};
-  w.onpointermove=function(e){if(id!==e.pointerId)return;setZoom(z0+(y0-e.clientY)/90)};
+  w.onpointermove=function(e){if(id!==e.pointerId)return;setZoom(z0+(y0-e.clientY)/70)};
   function end(e){if(id!==e.pointerId)return;id=null;w.classList.remove("on");mv=false;if(!L.on&&S.src)prep()}
   w.onpointerup=end;w.onpointercancel=end;
 })();
 $("flcd").onclick=function(){openS("film")};
 $("setb").onclick=function(){openS("cfg")};
+/* quick buttons in the right column */
+function setFr(k){
+  S.fr=k;var ks=Object.keys(FR);
+  document.querySelectorAll("#frs button").forEach(function(x,i){x.setAttribute("aria-pressed",ks[i]===k)});
+  lab();prep();toast("Frame: "+FR[k].n);
+}
+$("frb").onclick=function(){var ks=Object.keys(FR);setFr(ks[(ks.indexOf(S.fr)+1)%ks.length])};
+var GRL=[0,.5,1,1.5];
+$("grb").onclick=function(){
+  var i=GRL.indexOf(S.gm);S.gm=GRL[((i<0?2:i)+1)%GRL.length];var pc=Math.round(S.gm*100);
+  $("g").value=pc;$("gv").textContent=pc+"%";$("grl").textContent=pc===100?"GRAIN":pc===0?"NO GRAIN":pc+"%";
+  this.classList.toggle("on",pc!==100);queue();toast("Grain "+(pc===0?"off":pc+"%"));
+};
 /* geser, zoom, putar */
 var P={},fp=false,pd=0,pz=1,mv=false,pt=0;
 function clamp(v,a,b){return v<a?a:v>b?b:v}
